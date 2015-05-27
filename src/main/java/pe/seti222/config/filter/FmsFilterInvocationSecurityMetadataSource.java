@@ -1,6 +1,5 @@
 package pe.seti222.config.filter;
 
-import java.security.acl.Permission;
 import java.util.Collection;
 import java.util.Hashtable;
 import java.util.Map;
@@ -12,19 +11,23 @@ import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 
+import pe.seti222.service.menu.MenuRoleService;
+
 /**
  * DB 기반의 인증 관리 시스템.
  */
 public class FmsFilterInvocationSecurityMetadataSource implements FilterInvocationSecurityMetadataSource {
 
+	private final MenuRoleService menuRoleService;
+    private final FmsUrlParser parser;
+    private final Map<String, Permission> permissions;
+	
     public FmsFilterInvocationSecurityMetadataSource(MenuRoleService menuRoleService) {
         this.menuRoleService = menuRoleService;
         parser = new FmsUrlParser();
         permissions = new Hashtable<>();
     }
-    private final MenuRoleService menuRoleService;
-    private final FmsUrlParser parser;
-    private final Map<String, Permission> permissions;
+    
 
     @Override
     public Collection<ConfigAttribute> getAttributes(Object object) throws IllegalArgumentException {
@@ -45,9 +48,9 @@ public class FmsFilterInvocationSecurityMetadataSource implements FilterInvocati
 
         String[] roles;
         if(permission == null) {
-            roles = new String[] { "ROLE_ADMIN" };
+            roles = new String[] { "ADMIN" };
         } else {
-            roles = new String[] { "ROLE_ADMIN", permission.getName() };
+            roles = new String[] { "ADMIN", permission.getName() };
         }
         return SecurityConfig.createList(roles);
     }
