@@ -13,7 +13,7 @@ public class LoginController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
 
-    @RequestMapping(value = "/join", method = RequestMethod.GET)
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String getLoginPage(Model model, @RequestParam(value="error", required=false) String error) {
     	if(error != null) {
     		model.addAttribute("error",error);
